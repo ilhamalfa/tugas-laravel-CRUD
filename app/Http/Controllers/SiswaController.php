@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatesiswaRequest;
 use App\Models\sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class SiswaController extends Controller
 {
@@ -30,16 +31,19 @@ class SiswaController extends Controller
         // $data3 = DB::table('siswa')->select('id', 'nama')->get();
 
         // 4. Nampilin Semua Data Pada Table
-        $data4 = siswa::all();
+        // $data4 = siswa::all();
 
         // 5. Join Table
         // $data5 = siswa::select('siswa.id', 'siswa.nis', 'siswa.nama', 'siswa.alamat', 'sekolah.nama_sekolah')->join('sekolah', 'siswa.sekolah_id', '=', 'sekolah.id')->get();
+
+        // 6. Nampilin Semua Data Pada Table (paginate)
+        $data6 = siswa::paginate(10);
 
         // dd($data5);
 
         // return view('table', compact('data4'));
         return view('table', [
-            'data' => $data4
+            'data' => $data6
         ]);
     }
 
@@ -131,6 +135,21 @@ class SiswaController extends Controller
         ]);
     }
 
+    // public function edit($id)
+    // {
+    //     $data = DB::select('select * from siswa where active = ?', $id);
+    //     $data = DB::table('siswa)->where('id', '=', $id);
+    //     $data = siswa::where('id', '=', $id);
+    //     $data = siswa::find($id);
+
+    //     $sekolah = sekolah::all();
+
+    //     return view('edit', [
+    //         'data_siswa' => $data,
+    //         'data_sekolah' => $sekolah
+    //     ]);
+    // }
+
     /**
      * Update the specified resource in storage.
      *
@@ -143,6 +162,25 @@ class SiswaController extends Controller
         // \dd($siswa);
 
         // Validasi
+        // $validate = $request->validate([
+        //     'nis' => 'required|integer',
+        //     'nama' => 'required|string',
+        //     'alamat' => 'required',
+        //     'sekolah_id' => 'required'
+        // ]);
+
+        // // Memasukkan Data Yang Telah divalidasi
+        // DB::table('siswa')->where('id', $siswa->id)
+        //     ->update([
+        //         'nis' => $request->nis,
+        //         'nama' => $request->nama,
+        //         'alamat' => $request->alamat,
+        //         'sekolah_id' => $request->sekolah_id,
+        //     ]);
+
+        // Cara 2
+        $data = siswa::find($siswa->id);
+
         $validate = $request->validate([
             'nis' => 'required|integer',
             'nama' => 'required|string',
@@ -150,16 +188,9 @@ class SiswaController extends Controller
             'sekolah_id' => 'required'
         ]);
 
-        // Memasukkan Data Yang Telah divalidasi
-        DB::table('siswa')->where('id', $siswa->id)
-            ->update([
-                'nis' => $request->nis,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'sekolah_id' => $request->sekolah_id,
-            ]);
+        $data->update($validate);
 
-            return redirect('siswa')->with('success', 'Data Berhasil Diedit!');
+        return redirect('siswa')->with('success', 'Data Berhasil Diedit!');
     }
 
     /**
@@ -172,8 +203,36 @@ class SiswaController extends Controller
     {
         // \dd($siswa);
 
-        DB::table('siswa')->where('id', $siswa->id)->delete();
+        // Cara 1
+        // DB::table('siswa')->where('id', $siswa->id)->delete();
+
+        // Cara 2
+        $data = siswa::findorFail($siswa->id);
+
+        $data->delete($data);
 
         return redirect('siswa')->with('success', 'Data Berhasil Dihapus!');
     }
+
+    // Mengambil API wilayah Method GET
+    public function wilayah(){
+        $wilayah = Http::get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+
+        dd($wilayah->json());
+    }
+
+    // Mengambil API wilayah Method POST
+    public function postData(){
+        $data = Http::post('http://127.0.0.1:8000/api/siswa', [
+            'nis' => '1057',
+            'nama' => 'liam',
+            'alamat' => 'malang',
+            'sekolah_id' => 2
+        ]);
+
+        return $data;
+        // return redirect('siswa');
+    }
+
+
 }

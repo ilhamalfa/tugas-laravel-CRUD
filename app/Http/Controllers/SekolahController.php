@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\sekolah;
-use App\Http\Requests\StoresekolahRequest;
-use App\Http\Requests\UpdatesekolahRequest;
+use Illuminate\Http\Request;
 
 class SekolahController extends Controller
 {
@@ -31,10 +30,10 @@ class SekolahController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoresekolahRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoresekolahRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -64,11 +63,11 @@ class SekolahController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatesekolahRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\sekolah  $sekolah
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatesekolahRequest $request, sekolah $sekolah)
+    public function update(Request $request, sekolah $sekolah)
     {
         //
     }

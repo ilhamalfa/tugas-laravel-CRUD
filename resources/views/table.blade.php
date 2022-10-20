@@ -12,7 +12,7 @@
         </div>
     
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <table class="table table-light">
+        <table class="table table-light" id="dataTable">
             <thead class="thead-light">
                 <tr>
                     <th>#</th>
@@ -31,8 +31,14 @@
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->alamat }}</td>
                     <td>{{ $item->sekolah->nama_sekolah }}</td>
-                    <td><a href="{{ url('siswa/'. $item->id .'/edit') }}" class="btn btn-warning">Edit</a> </td>
                     <td>
+                        {{-- Menggunakan URL --}}
+                        {{-- <a href="{{ url('siswa/'. $item->id .'/edit') }}" class="btn btn-warning">Edit</a>  --}}
+                        {{-- Menggunakan Route --}}
+                        <a href="{{ route('siswa.edit', $item->id) }}" class="btn btn-warning">Edit</a> 
+                    </td>
+                    <td>
+                        {{-- Menggunakan route resource --}}
                         <form action="{{ url('siswa/'. $item->id) }}" method="POST">
                             @csrf
                             @method('delete')
@@ -44,5 +50,7 @@
             </tbody>
         </table>
     </div>
+    
+    {{ $data->links() }}
 
 @endsection
