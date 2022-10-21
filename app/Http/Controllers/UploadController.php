@@ -103,17 +103,20 @@ class UploadController extends Controller
             if(fileExists('storage/'. $request->namaGambar)){
                 unlink('storage/'. $request->namaGambar);
             }
+
             $file = $request->file('gambar')->store('img');
-    
+
             // return $file;
             $data->update([
                 'gambar' => $file
             ]);
-    
-            return redirect('upload')->with('success', 'Data Berhasil Diedit');
         }else{
-            return redirect('upload')->with('success', 'Data Tidak Ada Yang Diubah');
+            $data->update([
+                'gambar' => $data->gambar
+            ]);
         }
+
+        return redirect('upload')->with('success', 'Data Berhasil Diubah');
     }
 
     /**

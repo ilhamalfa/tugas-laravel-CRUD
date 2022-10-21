@@ -62,3 +62,5 @@ Route::get('postData', [SiswaController::class, 'postData']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('export', [SiswaController::class, 'export']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
 use App\Models\siswa;
 use App\Http\Requests\StoresiswaRequest;
 use App\Http\Requests\UpdatesiswaRequest;
@@ -9,6 +10,7 @@ use App\Models\sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -234,5 +236,7 @@ class SiswaController extends Controller
         // return redirect('siswa');
     }
 
-
+    public function export(){
+        return Excel::download(new SiswaExport, 'laporan-siswa.xlsx');
+    }
 }
