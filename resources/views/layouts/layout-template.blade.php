@@ -44,8 +44,6 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    {{-- flash massage --}}
-                    @include('layouts.flashmassage')
                     {{-- Isi Dari main --}}
                     @yield('main')
                 </div>
@@ -112,6 +110,8 @@
     <script src="{{ asset('sb/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('sb/js/demo/chart-pie-demo.js') }}"></script>
 
+    {{-- Ajax --}}
+    <script src={{ asset('js/app.js') }}></script>
 </body>
 
 </html>

@@ -220,7 +220,8 @@ class SiswaController extends Controller
     public function wilayah(){
         $wilayah = Http::get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
 
-        dd($wilayah->json());
+        return $wilayah->json();
+        // dd($wilayah->json());
     }
 
     // Mengambil API wilayah Method POST
@@ -237,6 +238,7 @@ class SiswaController extends Controller
     }
 
     public function export(){
-        return Excel::download(new SiswaExport, 'laporan-siswa.xlsx');
+        // return Excel::download(new SiswaExport, 'laporan-siswa.xlsx');
+        return (new SiswaExport)->download('test.pdf', \Maatwebsite\Excel\Excel::MPDF);
     }
 }

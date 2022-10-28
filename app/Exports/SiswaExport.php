@@ -43,31 +43,41 @@ use Maatwebsite\Excel\Concerns\WithProperties;
 //     }
 // }
 
-// class SiswaExport implements FromView
-// {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-//     public function view(): View
-//     {
-//         return view('excel-siswa', [
-//             'siswas' => siswa::all(),
-//         ]);
-//     }
-// }
-
-class SiswaExport implements FromQuery, WithHeadings
+// Menggunakan View
+class SiswaExport implements FromView
 {
-    public function headings(): array
+    use Exportable;
+
+    public function view(): View
     {
-        return[            
-            'nim',
-            'nama',
-            'alamat',
-            'sekolah'
-            ];
-    }
-    public function query(){
-        return siswa::select('nis', 'nama', 'alamat', 'sekolah_id');
+        $siswa = siswa::select('nama')->where('id', '=', 31)->get();
+        // $siswa = siswa::where('id', '=', 31)->get();
+        // dd($siswa);
+
+        return view('excel-siswa', [
+            'siswa' => $siswa,
+            'tanggal' => date(now())
+        ]);
     }
 }
+
+// Query + Heading
+
+// class SiswaExport implements FromQuery, WithHeadings
+// {
+//     use Exportable;
+
+//     public function headings(): array
+//     {
+//         return[            
+//             'nim',
+//             'nama',
+//             'alamat',
+//             'sekolah'
+//             ];
+//     }
+
+//     public function query(){
+//         return siswa::select('nis', 'nama', 'alamat', 'sekolah_id');
+//     }
+// }
