@@ -31,6 +31,10 @@ Route::resource('upload', UploadController::class);
 // Mengecek API get
 Route::get('wilayah', [SiswaController::class, 'wilayah']);
 
+Route::get('ajax', function (){
+    return view('ajax');
+});
+
 Route::get('postData', [SiswaController::class, 'postData']);
 
 // Mengelompokkan Middleware
@@ -65,6 +69,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('export', [SiswaController::class, 'export']);
 
-Route::get('ajax', function (){
-    return view('ajax');
+// Midtrans
+Route::get('midtrans', [SiswaController::class, 'midtrans']);
+
+// Midtrans View
+Route::get('vimid', function (){
+    return view('midtrans');
 });

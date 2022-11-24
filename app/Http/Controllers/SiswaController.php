@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class SiswaController extends Controller
 {
@@ -225,20 +227,44 @@ class SiswaController extends Controller
     }
 
     // Mengambil API wilayah Method POST
-    public function postData(){
-        $data = Http::post('http://127.0.0.1:8000/api/siswa', [
-            'nis' => '1057',
-            'nama' => 'liam',
-            'alamat' => 'malang',
-            'sekolah_id' => 2
-        ]);
+    // public function postData(){
+    //     $data = Http::post('http://127.0.0.1:8000/api/siswa', [
+    //         'nis' => '1057',
+    //         'nama' => 'liam',
+    //         'alamat' => 'malang',
+    //         'sekolah_id' => 2
+    //     ]);
 
-        return $data;
-        // return redirect('siswa');
-    }
+    //     return $data;
+    // }
 
     public function export(){
         // return Excel::download(new SiswaExport, 'laporan-siswa.xlsx');
         return (new SiswaExport)->download('test.pdf', \Maatwebsite\Excel\Excel::MPDF);
+    }
+
+    public function midtrans(){
+        // Set your Merchant Server Key
+        Config::$serverKey = 'SB-Mid-server-cq7kRbuqRQgu7TrMOWyyvTNF';
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        Config::$isProduction = false;
+        // Set sanitization on (default)
+        Config::$isSanitized = true;
+        // Set 3DS transaction for credit card to true
+        Config::$is3ds = true;
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => 10000,
+            ),
+            "enabled_payments" => [
+                "bank_transfer"
+            ],
+        );
+        
+        $snapToken = Snap::getSnapToken($params);
+
+        return json_encode($snapToken);
     }
 }

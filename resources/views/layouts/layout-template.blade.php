@@ -112,6 +112,9 @@
 
     {{-- Ajax --}}
     <script src={{ asset('js/app.js') }}></script>
+
+    {{-- Midtrans --}}
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<Set your ClientKey here>"></script>
 </body>
 
 </html>
